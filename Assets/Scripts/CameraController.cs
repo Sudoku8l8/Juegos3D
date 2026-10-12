@@ -27,6 +27,14 @@ public class CameraController : MonoBehaviour
 
         if (Mouse.current == null) return;
 
+        // No capturar el mouse si estamos en el menú de inicio, pausa, game over o victoria
+        if (GameManager.Instance != null && GameManager.Instance.CurrentState != GameManager.GameState.Playing)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            return;
+        }
+
         // Girar la camara sin mantener presionado el clic
         if (Cursor.lockState == CursorLockMode.Locked)
         {
@@ -34,7 +42,7 @@ public class CameraController : MonoBehaviour
             currentRotation += mouseX * rotationSpeed;
         }
 
-        // Capturar nuevamente el mouse con un clic
+        // Capturar nuevamente el mouse con un clic durante el gameplay
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             Cursor.lockState = CursorLockMode.Locked;

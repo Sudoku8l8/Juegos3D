@@ -31,6 +31,11 @@ public class playerController : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.CurrentState != GameManager.GameState.Playing)
+        {
+            return;
+        }
+
         bool isGrounded = controller.isGrounded;
 
         if (isGrounded && verticalVelocity < 0)
@@ -42,6 +47,11 @@ public class playerController : MonoBehaviour
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
             jumpPressed = false;
+
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.SoundType.Jump);
+            }
         }
 
         verticalVelocity += gravity * Time.deltaTime;
